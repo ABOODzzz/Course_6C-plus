@@ -1,0 +1,84 @@
+#include<iostream>
+#include<limits>
+#include <iomanip>
+#include <vector>
+#include<string>
+using namespace std;
+struct stEmployee {
+	string FirstName;
+	string LastName;
+	float Salary;
+};
+int ReadPosNum(string message)
+{
+	int num = 0;
+
+	do
+	{
+		cout << message;
+		cin >> num;
+
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "\nEnter positive numbers only!\n";
+			num = -1;
+		}
+
+	} while (num < 0);
+
+	return num;
+}
+stEmployee ReadInfos() {
+	stEmployee Employee;
+	
+	cout << "\nEner first name : "; getline(cin, Employee.FirstName); cout << endl;
+
+	cout << "\nEner last name : "; getline(cin, Employee.LastName); cout << endl;
+
+	 Employee.Salary=ReadPosNum("\nenter salary :"); cout << endl;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	return Employee;
+}
+
+bool AddMore() {
+	char result = ' ';
+	do {
+		cout << "\nDo u want to add another Employee ? yes press y,Y no press n,N :";
+		cin >> result;
+	} while (result!='y'&&result!='n'&&result!='N'&&result!='Y');
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	 return (result == 'Y' || result == 'y');
+	
+}
+void GeneralInfos(vector <stEmployee> &vEmployee) {
+	do {
+		cout << "\nenter the infos bellow : \n\n";
+		vEmployee.push_back(ReadInfos());
+	} while (AddMore());
+}
+
+void PrintGeneralInfos(vector <stEmployee>&vEmployee) {
+	cout << "\nCompany Employees infos are :\n\n";
+	for (stEmployee &Employee:vEmployee) {
+
+		cout << "the first Nmae is : " << Employee.FirstName<<endl;
+		cout << "the last Nmae is : " << Employee.LastName << endl;
+		cout << "the salary is : " << Employee.Salary << endl;
+		cout << "\n\n";
+
+	}
+	cout << "\n\n\n";
+}
+
+
+int main() {
+ 	vector <stEmployee> vEmployee;
+	GeneralInfos(vEmployee);
+		PrintGeneralInfos(vEmployee);
+
+	
+
+	
+}
