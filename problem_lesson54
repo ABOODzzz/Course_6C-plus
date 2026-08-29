@@ -1,0 +1,49 @@
+#using this code to write and read on a txt file 
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+void PrintResult(string FileName) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	string line;
+	if (MyFile.is_open()) {
+		while (getline(MyFile,line)) {
+			cout << line << endl;
+
+		}
+		MyFile.close();
+	}
+}
+string ReadInfos(string message) {
+	string info = " ";
+
+	cout << message; getline(cin, info);	
+	return info;
+
+}
+bool DoUWantToAddMore() {
+	char result;
+	cout << "\ndo u want to add more ? yes press y or Y else press n or N : "; cin >> result;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	return result == 'Y' || result == 'y';
+}
+void WriteMoreInfos(string FileName) {
+	fstream MyFile;
+	MyFile.open(FileName, ios::out|ios::app);
+	
+	if (MyFile.is_open()) {
+		 do{
+			 MyFile << ReadInfos("\nenter text here :") << endl;
+		 } while (DoUWantToAddMore());
+		MyFile.close();
+	}
+}
+
+
+int main() {
+	WriteMoreInfos("MyFile.txt");
+	cout << "\n\n";
+	PrintResult("MyFile.txt");
+}
