@@ -1,4 +1,5 @@
 //in this proplem i offer to user delete the name theat is in file and ask him either it founded or not if he would to enter another one to delete it 
+//code 1:
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -73,4 +74,60 @@ int main() {
 	FindAndDeleteContent(vFileContent);
 	cout << endl;
 	PrintVectorElements(vFileContent);
+}
+code 2:
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<vector>
+using namespace std;
+
+void SaveVectorToFile(string FileName,vector <string>vFileName) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::out);
+	if (MyFile.is_open()) {
+		for (string &line:vFileName) {
+			if (line != "")MyFile << line << endl;
+		}
+		MyFile.close();
+	}
+
+}
+void LoadDataFromFileToVector(string FileName,vector <string>&vFileContent) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	if (MyFile.is_open()) {
+		string line;
+		while (getline(MyFile,line)) {
+			vFileContent.push_back(line);
+		}
+		MyFile.close();
+	}
+}
+void DeleteDataFromFileToVector(string FileName,string Record) {
+	vector <string>vFileContent;
+	LoadDataFromFileToVector(FileName, vFileContent);
+	for (string &Line:vFileContent) {
+		if (Line == Record)Line = "";
+	}
+	SaveVectorToFile(FileName,vFileContent);
+}
+void PrintFileContent(string FileName) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	if (MyFile.is_open()) {
+		string Line="";
+		while (getline(MyFile,Line)) {
+			cout<< Line<<endl;
+		}
+	}
+}
+
+int main() {
+	vector <string> vFileContent;
+	cout << "before deleteing : " << endl;
+	PrintFileContent("MyFile.txt");
+	cout << "\nafter deletion : " << endl;
+	DeleteDataFromFileToVector("MyFile.txt","lana");
+	PrintFileContent("MyFile.txt");
 }
