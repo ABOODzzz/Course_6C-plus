@@ -1,0 +1,76 @@
+//in this proplem i offer to user delete the name theat is in file and ask him either it founded or not if he would to enter another one to delete it 
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<vector>
+using namespace std;
+
+void CopyFileContentToVector(string FileName,vector <string>&vFileContent) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	string line;
+	if (MyFile.is_open()) {
+		while (getline(MyFile,line)) {
+			vFileContent.push_back(line);
+
+		}
+		MyFile.close();
+	}
+}
+void PrintVectorElements(vector <string>&vFileConttent) {
+	for (string &line:vFileConttent) {
+		cout << line<<endl;
+	}
+}
+string ReadInfo(string message) {
+	string info;
+	cout << message; getline(cin, info);
+	return info;
+}
+bool TryAgain() {
+	char tryAgain=' ';
+	do {
+		cout << "\nDo u want to trry again ? yes press (Y,y) no press (N,n) :"; cin >> tryAgain; cout << endl;
+	} while (tryAgain!='Y'&& tryAgain != 'y' && tryAgain != 'N' && tryAgain != 'n' );
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	return tryAgain == 'Y' || tryAgain == 'y';
+}
+void FindAndDeleteContent(vector<string>& vFileContent)
+{
+	do{
+		bool found = false;
+	string MatchDelete = ReadInfo("\n\nEnter the content that you want to delete: ");
+	vector<string>::iterator it = vFileContent.begin();
+	
+	do
+	{
+		if (*it == MatchDelete)
+		{
+			found = true;
+			it = vFileContent.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	} while (it != vFileContent.end());
+	if (found)cout << "\nfounded and delted"<<endl;
+	else cout << "\nthere is no name like that" << endl;
+
+	} while (TryAgain());
+	
+
+}
+
+
+
+
+
+int main() {
+	vector <string> vFileContent;
+	CopyFileContentToVector("MyFile.txt", vFileContent);
+	PrintVectorElements(vFileContent);
+	FindAndDeleteContent(vFileContent);
+	cout << endl;
+	PrintVectorElements(vFileContent);
+}
