@@ -1,0 +1,56 @@
+//in this code I've made a function to update the elemnt in the file using vector 
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<vector>
+using namespace std;
+
+void SaveVectorToFile(string FileName,vector <string>vFileName) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::out);
+	if (MyFile.is_open()) {
+		for (string &line:vFileName) {
+			if (line != "")MyFile << line << endl;
+		}
+		MyFile.close();
+	}
+
+}
+void LoadDataFromFileToVector(string FileName,vector <string>&vFileContent) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	if (MyFile.is_open()) {
+		string line;
+		while (getline(MyFile,line)) {
+			vFileContent.push_back(line);
+		}
+		MyFile.close();
+	}
+}
+void UpdateDataFromFileToVector(string FileName,string Record,string UpdateTo) {
+	vector <string>vFileContent;
+	LoadDataFromFileToVector(FileName, vFileContent);
+	for (string &Line:vFileContent) {
+		if (Line == Record)Line =UpdateTo ;
+	}
+	SaveVectorToFile(FileName,vFileContent);
+}
+void PrintFileContent(string FileName) {
+	fstream MyFile;
+	MyFile.open(FileName,ios::in);
+	if (MyFile.is_open()) {
+		string Line="";
+		while (getline(MyFile,Line)) {
+			cout<< Line<<endl;
+		}
+	}
+}
+
+int main() {
+	vector <string> vFileContent;
+	cout << "before deleteing : " << endl;
+	PrintFileContent("MyFile.txt");
+	cout << "\nafter deletion : " << endl;
+	UpdateDataFromFileToVector("MyFile.txt","lana","omar");
+	PrintFileContent("MyFile.txt");
+}
